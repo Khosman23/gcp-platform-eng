@@ -1,0 +1,7 @@
+encryptionsalt: v1:TAX9DyIBqbU=:v1:Xkmcr0m90Gd4Sscq:QYnqQoONwliuAwwnnhN2tsQNM5nURg==
+config:
+  gcp:project: platform-eng-1777467808
+  gcp:region: europe-west1
+  gcp:zone: europe-west1-b
+  platform:environment: dev
+  platform:clusterName: platform-cluster

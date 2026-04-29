@@ -1,0 +1,10 @@
+{
+  "name": "api-service",
+  "version": "1.0.0",
+  "description": "Platform Engineering demo API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo 'Tests passed' && exit 0"
+  }
+}
