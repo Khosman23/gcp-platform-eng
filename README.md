@@ -16,11 +16,15 @@ A production-ready Internal Developer Platform (IDP) built on Google Cloud Platf
 | Monitoring | OpenTelemetry + Google Cloud Ops Suite |
 | Chaos | LitmusChaos |
 
+---
+
 ## GKE Autopilot Cluster — 100% Healthy
 
 ![GKE Cluster](docs/screenshots/gke-cluster.png)
 
-GKE Autopilot cluster `platform-cluster` running in `europe-west1` with 1.85 vCPUs and 6.36 GB memory. 100% healthy, 100% up to date. Provisioned entirely via Pulumi TypeScript IaC.
+GKE Autopilot cluster `platform-cluster` running in `europe-west1` with 1.85 vCPUs and 6.36 GB memory. 100% healthy, 100% up to date. Provisioned entirely via Pulumi TypeScript IaC in 10 minutes 19 seconds.
+
+---
 
 ## Artifact Registry
 
@@ -28,11 +32,15 @@ GKE Autopilot cluster `platform-cluster` running in `europe-west1` with 1.85 vCP
 
 Docker repository `dev-platform-docker` in `europe-west1 (Belgium)` storing all platform container images.
 
+---
+
 ## CI/CD — Azure DevOps Pipelines
 
 ![Azure DevOps Pipeline](docs/screenshots/azure-devops-pipeline.png)
 
 Three-stage pipeline: **Test Services → Build & Push → Deploy to GKE**, triggered on every push to `main`. Pipeline is configured and awaiting free parallelism grant from Microsoft (submitted via https://aka.ms/azpipelines-parallelism-request).
+
+---
 
 ## GitOps with FluxCD
 
@@ -41,9 +49,11 @@ Three-stage pipeline: **Test Services → Build & Push → Deploy to GKE**, trig
 FluxCD v2.8.6 bootstrapped on GKE. Flux automatically committed component manifests to the repository and continuously reconciles cluster state with Git. Four controllers running:
 
 - `helm-controller` — 1/1 Running
-- `kustomize-controller` — 1/1 Running  
+- `kustomize-controller` — 1/1 Running
 - `notification-controller` — 1/1 Running
 - `source-controller` — 1/1 Running
+
+---
 
 ## Live Platform — Backstage + OTel + LitmusChaos
 
@@ -64,11 +74,31 @@ All platform components running live on GKE:
 - Pod: `1/1 Running`
 - Ports: gRPC `4317`, HTTP `4318`, Metrics `8888`
 
+---
+
 ## Pub/Sub — Async Messaging
 
 ![Pub/Sub](docs/screenshots/pubsub.png)
 
 Live Pub/Sub subscription `platform-events-sub` connected to topic `platform-events` in project `platform-eng-1777467808`. State: **active**.
+
+---
+
+## Cloud SQL — PostgreSQL 15
+
+![Cloud SQL](docs/screenshots/cloud-sql.png)
+
+PostgreSQL 15 database provisioned in `europe-west1-b` on `db-f1-micro` tier. Live CPU utilization graph confirms the instance is running and accepting connections.
+
+- **Instance:** `platform-db`
+- **Version:** PostgreSQL 15
+- **Status:** Running
+- **Public IP:** `34.62.9.248`
+- **Location:** `europe-west1-b`
+
+In a production setup this would use Private Service Connect or Cloud SQL Auth Proxy with Workload Identity for zero-trust database access — no passwords, no public IP.
+
+---
 
 ## Chaos Engineering — LitmusChaos
 
@@ -78,9 +108,11 @@ pod "backstage-7cdd9f454b-klvfz" deleted
 
 Kubernetes automatically spawned a replacement pod. **Recovery time: 46 seconds.** Proves self-healing infrastructure.
 
+---
+
 ## Infrastructure as Code — Pulumi TypeScript
 
-All GCP infrastructure defined as TypeScript, not YAML or HCL. Single command deploys everything:
+All GCP infrastructure defined as TypeScript — not YAML or HCL. Single command deploys everything:
 
 ```bash
 pulumi up
@@ -97,35 +129,32 @@ Provisions in 10 minutes 19 seconds:
 | Cloud Router | 16s |
 | Cloud NAT | 12s |
 
+---
+
 ## Architecture
 GitHub Repository (gcp-platform-eng)
 │
-├── FluxCD (watches + reconciles)
+├── FluxCD (watches + reconciles every 60s)
 │         │
 │         ▼
 │   GKE Autopilot (europe-west1)
-│         ├── backstage (IDP)
-│         ├── flux-system (GitOps)
-│         ├── observability (OTel)
-│         └── litmus (Chaos)
+│         ├── backstage namespace (IDP)
+│         ├── flux-system namespace (GitOps)
+│         ├── observability namespace (OTel)
+│         └── litmus namespace (Chaos)
 │
 └── Azure DevOps Pipelines
 │
 ▼
-Test → Build → Deploy
+Test → Build & Push → Deploy to GKE
 │
 ▼
-Artifact Registry (Docker)
-│
-▼
-Cloud SQL (PostgreSQL 15)
-Pub/Sub (platform-events)
+Artifact Registry (Docker images)
+Data Layer:
+├── Cloud SQL PostgreSQL 15 (europe-west1-b)
+└── Pub/Sub: platform-events → platform-events-sub
 
-## Data Layer
-
-- **Cloud SQL:** PostgreSQL 15 on `db-f1-micro` in `europe-west1-b`
-- **Pub/Sub Topic:** `platform-events`
-- **Pub/Sub Subscription:** `platform-events-sub` (active)
+---
 
 ## Author
 
