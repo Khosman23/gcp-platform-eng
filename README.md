@@ -18,25 +18,25 @@ A production-ready Internal Developer Platform (IDP) built on Google Cloud Platf
 
 ## GKE Autopilot Cluster — 100% Healthy
 
-![GKE Cluster](Skjermbilde%202026-05-03%20142434.png)
+![GKE Cluster](docs/screenshots/gke-cluster.png)
 
 GKE Autopilot cluster `platform-cluster` running in `europe-west1` with 1.85 vCPUs and 6.36 GB memory. 100% healthy, 100% up to date. Provisioned entirely via Pulumi TypeScript IaC.
 
 ## Artifact Registry
 
-![Artifact Registry](Skjermbilde%202026-05-03%20142531.png)
+![Artifact Registry](docs/screenshots/artifact-registry.png)
 
 Docker repository `dev-platform-docker` in `europe-west1 (Belgium)` storing all platform container images.
 
 ## CI/CD — Azure DevOps Pipelines
 
-![Azure DevOps Pipeline](Skjermbilde%202026-05-03%20143158.png)
+![Azure DevOps Pipeline](docs/screenshots/azure-devops-pipeline.png)
 
 Three-stage pipeline: **Test Services → Build & Push → Deploy to GKE**, triggered on every push to `main`. Pipeline is configured and awaiting free parallelism grant from Microsoft (submitted via https://aka.ms/azpipelines-parallelism-request).
 
 ## GitOps with FluxCD
 
-![Flux Commits](Skjermbilde%202026-05-03%20143105.png)
+![Flux Commits](docs/screenshots/flux-commits.png)
 
 FluxCD v2.8.6 bootstrapped on GKE. Flux automatically committed component manifests to the repository and continuously reconciles cluster state with Git. Four controllers running:
 
@@ -47,7 +47,7 @@ FluxCD v2.8.6 bootstrapped on GKE. Flux automatically committed component manife
 
 ## Live Platform — Backstage + OTel + LitmusChaos
 
-![kubectl get all](Skjermbilde%202026-05-03%20142954.png)
+![kubectl get all](docs/screenshots/kubectl-all.png)
 
 All platform components running live on GKE:
 
@@ -66,7 +66,7 @@ All platform components running live on GKE:
 
 ## Pub/Sub — Async Messaging
 
-![Pub/Sub](Skjermbilde%202026-05-03%20142717.png)
+![Pub/Sub](docs/screenshots/pubsub.png)
 
 Live Pub/Sub subscription `platform-events-sub` connected to topic `platform-events` in project `platform-eng-1777467808`. State: **active**.
 
